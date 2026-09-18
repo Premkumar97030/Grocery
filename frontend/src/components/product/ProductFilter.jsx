@@ -65,20 +65,25 @@ export const ProductFilter = ({
           >
             <span>All Categories</span>
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat._id}
-              type="button"
-              onClick={() => onSelectCategory(cat.name)}
-              className={`w-full text-left text-xs font-medium px-3 py-2 rounded-xl transition-colors flex items-center justify-between ${
-                selectedCategory.toLowerCase() === cat.name.toLowerCase()
-                  ? 'bg-emerald-50 text-emerald-700 font-bold'
-                  : 'text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              <span className="truncate">{cat.name}</span>
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const catName = typeof cat === 'string' ? cat : (cat.name || '');
+            const catId = typeof cat === 'string' ? cat : (cat._id || cat.id || cat.name);
+            const isSelected = selectedCategory && selectedCategory.toLowerCase() === catName.toLowerCase();
+            return (
+              <button
+                key={catId}
+                type="button"
+                onClick={() => onSelectCategory(catName)}
+                className={`w-full text-left text-xs font-medium px-3 py-2 rounded-xl transition-colors flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-emerald-50 text-emerald-700 font-bold'
+                    : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                <span className="truncate">{catName}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

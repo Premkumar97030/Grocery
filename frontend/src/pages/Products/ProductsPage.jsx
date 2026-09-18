@@ -31,7 +31,8 @@ export const ProductsPage = () => {
   const fetchCategories = async () => {
     try {
       const res = await categoryService.getCategories();
-      if (res.success) setCategories(res.data.categories || []);
+      const cats = res.data?.categories || res.categories || (Array.isArray(res.data) ? res.data : []);
+      setCategories(cats);
     } catch (e) {
       console.warn('Failed to load categories', e);
     }
@@ -54,10 +55,14 @@ export const ProductsPage = () => {
       if (currentInStock) params.inStock = true;
 
       const res = await productService.getProducts(params);
-      if (res.success) {
-        setProducts(res.data.products || []);
-        if (res.data.pagination) setPagination(res.data.pagination);
-      }
+      const prods = res.data?.products || res.products || (Array.isArray(res.data) ? res.data : []);
+      setProducts(prods);
+      const pag = res.data?.pagination || res.pagination || {
+        page: currentPage,
+        totalPages: Math.ceil(prods.length / 12) || 1,
+        total: prods.length,
+      };
+      setPagination(pag);
     } catch (err) {
       setError(err.message || 'Failed to fetch products');
     } finally {

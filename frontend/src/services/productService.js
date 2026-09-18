@@ -4,14 +4,20 @@ export const productService = {
   async getProducts(params = {}) {
     const response = await api.get('/products', { params });
     const payload = response.data?.data;
-    const products = payload?.products || (Array.isArray(payload) ? payload : response.data?.products || []);
-    const pagination = payload?.pagination || {
-      page: 1,
+    const rawProducts = payload?.products || (Array.isArray(payload) ? payload : response.data?.products || (Array.isArray(response.data) ? response.data : []));
+    const products = Array.isArray(rawProducts) ? rawProducts : [];
+    const pagination = payload?.pagination || response.data?.pagination || {
+      page: Number(params.page) || 1,
       totalPages: 1,
       total: products.length,
+      limit: Number(params.limit) || 12,
     };
     return {
-      data: products,
+      success: true,
+      data: {
+        products,
+        pagination,
+      },
       products,
       pagination,
       total: pagination.total,
@@ -23,17 +29,25 @@ export const productService = {
   async getFeaturedProducts() {
     const response = await api.get('/products', { params: { isFeatured: true, limit: 8 } });
     const payload = response.data?.data;
-    const products = payload?.products || (Array.isArray(payload) ? payload : response.data?.products || []);
+    const rawProducts = payload?.products || (Array.isArray(payload) ? payload : response.data?.products || (Array.isArray(response.data) ? response.data : []));
+    const products = Array.isArray(rawProducts) ? rawProducts : [];
     return {
-      data: products,
+      success: true,
+      data: {
+        products,
+      },
       products,
     };
   },
 
   async getProductById(id) {
     const response = await api.get(`/products/${id}`);
-    const data = response.data?.data || response.data;
-    return { data };
+    const product = response.data?.data?.product || response.data?.product || response.data?.data || response.data;
+    return {
+      success: true,
+      data: { product },
+      product,
+    };
   },
 
   async createProduct(productData) {
@@ -57,3 +71,4 @@ export const productService = {
 };
 
 export default productService;
+

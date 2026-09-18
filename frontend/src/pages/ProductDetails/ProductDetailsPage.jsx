@@ -37,8 +37,8 @@ export const ProductDetailsPage = () => {
       setLoading(true);
       setError(null);
       const res = await productService.getProductById(id);
-      if (res.success && res.data.product) {
-        const prod = res.data.product;
+      const prod = res.data?.product || res.product || res.data;
+      if (prod) {
         setProduct(prod);
 
         // Fetch related products in the same category
@@ -47,9 +47,8 @@ export const ProductDetailsPage = () => {
             category: prod.category,
             limit: 4,
           });
-          if (relRes.success && relRes.data.products) {
-            setRelatedProducts(relRes.data.products.filter((p) => p._id !== prod._id));
-          }
+          const relProds = relRes.data?.products || relRes.products || (Array.isArray(relRes.data) ? relRes.data : []);
+          setRelatedProducts(relProds.filter((p) => p._id !== prod._id));
         }
       }
     } catch (err) {

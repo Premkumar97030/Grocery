@@ -4,18 +4,25 @@ export const categoryService = {
   async getCategories() {
     const response = await api.get('/categories');
     const payload = response.data?.data;
-    const categories = payload?.categories || (Array.isArray(payload) ? payload : response.data?.categories || (Array.isArray(response.data) ? response.data : []));
+    const raw = payload?.categories || (Array.isArray(payload) ? payload : response.data?.categories || (Array.isArray(response.data) ? response.data : []));
+    const categories = Array.isArray(raw) ? raw : [];
     return {
       success: true,
-      data: Array.isArray(categories) ? categories : [],
-      categories: Array.isArray(categories) ? categories : [],
+      data: {
+        categories,
+      },
+      categories,
     };
   },
 
   async getCategoryById(id) {
     const response = await api.get(`/categories/${id}`);
-    const data = response.data?.data?.category || response.data?.category || response.data?.data || response.data;
-    return { data };
+    const category = response.data?.data?.category || response.data?.category || response.data?.data || response.data;
+    return {
+      success: true,
+      data: { category },
+      category,
+    };
   },
 
   async createCategory(categoryData) {
