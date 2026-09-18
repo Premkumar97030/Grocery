@@ -1,7 +1,11 @@
 const dotenv = require('dotenv');
 const path = require('path');
 
+// Load environment from backend/.env or root .env
+dotenv.config({ path: path.join(__dirname, '../../backend/.env') });
 dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config();
+
 
 /**
  * Sanitizes environment variable values by trimming, stripping accidental 'KEY=' prefixes,
