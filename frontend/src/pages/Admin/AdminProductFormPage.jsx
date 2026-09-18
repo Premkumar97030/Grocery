@@ -33,11 +33,13 @@ const AdminProductFormPage = () => {
     const fetchData = async () => {
       try {
         const catRes = await categoryService.getCategories();
-        setCategories(catRes.data || []);
+        const catList = Array.isArray(catRes.data) ? catRes.data : (Array.isArray(catRes.categories) ? catRes.categories : []);
+        setCategories(catList);
 
         if (isEditing) {
           const prodRes = await productService.getProductById(id);
           const p = prodRes.data?.product || prodRes.data;
+
           if (p) {
             setName(p.name || '');
             setDescription(p.description || '');

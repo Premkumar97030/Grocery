@@ -13,13 +13,16 @@ const AdminUsersPage = () => {
       try {
         setLoading(true);
         const res = await userService.getAllUsers();
-        setUsers(res.data || []);
+        const list = Array.isArray(res.data) ? res.data : (Array.isArray(res.users) ? res.users : []);
+        setUsers(list);
       } catch (err) {
         console.error('Failed to load users:', err);
+        setUsers([]);
       } finally {
         setLoading(false);
       }
     };
+
 
     fetchUsers();
   }, []);

@@ -23,13 +23,16 @@ const AdminCategoriesPage = () => {
     try {
       setLoading(true);
       const res = await categoryService.getCategories();
-      setCategories(res.data || []);
+      const list = Array.isArray(res.data) ? res.data : (Array.isArray(res.categories) ? res.categories : []);
+      setCategories(list);
     } catch (err) {
       console.error('Failed to load categories:', err);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchCategories();

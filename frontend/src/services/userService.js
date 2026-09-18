@@ -28,8 +28,15 @@ export const userService = {
 
   async getAllUsers() {
     const response = await api.get('/users');
-    return response.data;
+    const payload = response.data?.data;
+    const users = payload?.users || (Array.isArray(payload) ? payload : response.data?.users || (Array.isArray(response.data) ? response.data : []));
+    return {
+      success: true,
+      data: Array.isArray(users) ? users : [],
+      users: Array.isArray(users) ? users : [],
+    };
   },
 };
 
 export default userService;
+
