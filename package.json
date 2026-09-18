@@ -9,7 +9,7 @@
     "backend": "npm run dev --workspace=@grocery/backend",
     "frontend": "npm run dev --workspace=@grocery/frontend",
     "build": "npm run build --workspace=@grocery/frontend",
-    "start": "npm run start --workspace=@grocery/backend"
+    "start": "node backend/src/server.js"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
