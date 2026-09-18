@@ -15,9 +15,8 @@ export const CategoriesPage = () => {
       setLoading(true);
       setError(null);
       const res = await categoryService.getCategories();
-      if (res.success) {
-        setCategories(res.data.categories || []);
-      }
+      const list = Array.isArray(res.data) ? res.data : (Array.isArray(res.categories) ? res.categories : (res.data?.categories || []));
+      setCategories(list);
     } catch (err) {
       setError(err.message || 'Failed to load categories');
     } finally {
