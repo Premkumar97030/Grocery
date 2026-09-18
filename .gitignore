@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+dist/
+build/
+uploads/
+backend/src/uploads/*
+!backend/src/uploads/.gitkeep
+!backend/src/uploads/products/
+!backend/src/uploads/products/.gitkeep
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/

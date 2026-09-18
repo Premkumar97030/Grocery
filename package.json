@@ -1,0 +1,19 @@
+{
+  "name": "grocery-delivery-app",
+  "version": "1.0.0",
+  "description": "Full-stack grocery delivery application",
+  "private": true,
+  "workspaces": ["frontend", "backend"],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run backend\" \"npm run frontend\"",
+    "backend": "npm run dev --workspace=@grocery/backend",
+    "frontend": "npm run dev --workspace=@grocery/frontend",
+    "build": "npm run build --workspace=@grocery/frontend",
+    "start": "npm run start --workspace=@grocery/backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "author": "",
+  "license": "ISC"
+}
