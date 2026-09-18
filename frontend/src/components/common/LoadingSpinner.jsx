@@ -1,7 +1,8 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
 
-export const LoadingSpinner = ({ size = 'md', text = 'Loading...', fullScreen = false }) => {
+export const LoadingSpinner = ({ size = 'md', text, message, fullScreen = false }) => {
+  const displayText = message || text || 'Loading...';
   const sizes = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
@@ -11,7 +12,7 @@ export const LoadingSpinner = ({ size = 'md', text = 'Loading...', fullScreen = 
   const content = (
     <div className="flex flex-col items-center justify-center p-8 text-center">
       <Loader2 className={`${sizes[size] || sizes.md} animate-spin text-emerald-600 mb-3`} />
-      {text && <p className="text-sm font-medium text-slate-500 animate-pulse">{text}</p>}
+      {displayText && <p className="text-sm font-medium text-slate-500 animate-pulse">{displayText}</p>}
     </div>
   );
 
@@ -27,3 +28,4 @@ export const LoadingSpinner = ({ size = 'md', text = 'Loading...', fullScreen = 
 };
 
 export default LoadingSpinner;
+

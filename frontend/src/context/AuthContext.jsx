@@ -5,14 +5,24 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('freshcart_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('freshcart_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
   });
   const [token, setToken] = useState(() => localStorage.getItem('freshcart_token'));
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    const hasToken = !!localStorage.getItem('freshcart_token');
+    const hasUser = !!localStorage.getItem('freshcart_user');
+    // If token exists but no user yet, wait for fetchMe. If user exists, don't block.
+    return hasToken && !hasUser;
+  });
 
   const fetchMe = async () => {
-    if (!localStorage.getItem('freshcart_token')) {
+    const savedToken = localStorage.getItem('freshcart_token');
+    if (!savedToken) {
       setUser(null);
       setLoading(false);
       return;
@@ -25,8 +35,13 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('freshcart_user', JSON.stringify(res.data.user));
       }
     } catch (err) {
-      console.warn('[AuthContext] Session expired or invalid token');
-      logout();
+      // Only logout on explicit 401 Unauthorized (expired or invalid token)
+      if (err.response && err.response.status === 401) {
+        console.warn('[AuthContext] Session expired or invalid token');
+        logout();
+      } else {
+        console.warn('[AuthContext] Background sync warning:', err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -35,6 +50,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     fetchMe();
   }, []);
+
 
   const login = async (email, password) => {
     const res = await authService.login({ email, password });

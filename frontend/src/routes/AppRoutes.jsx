@@ -101,6 +101,7 @@ const AppRoutes = () => {
         <Route index element={<AdminDashboardPage />} />
         <Route path="products" element={<AdminProductsPage />} />
         <Route path="products/new" element={<AdminProductFormPage />} />
+        <Route path="products/add" element={<AdminProductFormPage />} />
         <Route path="products/edit/:id" element={<AdminProductFormPage />} />
         <Route path="categories" element={<AdminCategoriesPage />} />
         <Route path="orders" element={<AdminOrdersPage />} />
