@@ -118,17 +118,17 @@ const AdminProductsPage = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700">
-                        {p.category?.name || 'Uncategorized'}
+                      <span className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100">
+                        {typeof p.category === 'object' ? p.category?.name : (p.category || 'General')}
                       </span>
                     </td>
                     <td className="px-6 py-4 font-bold text-gray-900">
-                      ${p.price?.toFixed(2)}
-                      {p.discountPrice && (
+                      ₹{p.price?.toFixed(2)}
+                      {p.discountPrice ? (
                         <span className="text-xs text-rose-500 font-normal ml-1">
-                          (${p.discountPrice?.toFixed(2)})
+                          (₹{p.discountPrice?.toFixed(2)})
                         </span>
-                      )}
+                      ) : null}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`font-semibold ${
@@ -138,8 +138,8 @@ const AdminProductsPage = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      {p.isAvailable && p.stock > 0 ? (
-                        <Badge variant="success">Active</Badge>
+                      {p.isActive !== false && p.stock > 0 ? (
+                        <Badge variant="success">In Stock</Badge>
                       ) : (
                         <Badge variant="danger">Out of Stock</Badge>
                       )}

@@ -37,20 +37,22 @@ const AdminProductFormPage = () => {
 
         if (isEditing) {
           const prodRes = await productService.getProductById(id);
-          const p = prodRes.data;
-          setName(p.name || '');
-          setDescription(p.description || '');
-          setCategory(p.category?._id || p.category || '');
-          setPrice(p.price?.toString() || '');
-          setDiscountPrice(p.discountPrice ? p.discountPrice.toString() : '');
-          setUnit(p.unit || '1 pc');
-          setStock(p.stock?.toString() || '50');
-          setImage(p.image || '');
-          setIsFeatured(Boolean(p.isFeatured));
-          setIsAvailable(p.isAvailable !== false);
+          const p = prodRes.data?.product || prodRes.data;
+          if (p) {
+            setName(p.name || '');
+            setDescription(p.description || '');
+            setCategory(typeof p.category === 'object' ? p.category?.name : (p.category || ''));
+            setPrice(p.price !== undefined ? p.price.toString() : '');
+            setDiscountPrice(p.discountPrice ? p.discountPrice.toString() : '');
+            setUnit(p.unit || '1 unit');
+            setStock(p.stock !== undefined ? p.stock.toString() : '50');
+            setImage(p.image || '');
+            setIsFeatured(Boolean(p.isFeatured));
+            setIsAvailable(p.isActive !== false);
+          }
         }
       } catch (err) {
-        setError('Failed to load form data');
+        setError('Failed to load form data: ' + (err.message || 'Product not found'));
       } finally {
         setInitialLoading(false);
       }
@@ -74,12 +76,12 @@ const AdminProductFormPage = () => {
       description,
       category,
       price: parseFloat(price),
-      discountPrice: discountPrice ? parseFloat(discountPrice) : undefined,
+      discountPrice: discountPrice ? parseFloat(discountPrice) : 0,
       unit,
-      stock: parseInt(stock, 10),
+      stock: parseInt(stock, 10) || 0,
       image: image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop&q=60',
       isFeatured,
-      isAvailable,
+      isActive: isAvailable,
     };
 
     try {
@@ -90,11 +92,12 @@ const AdminProductFormPage = () => {
       }
       navigate('/admin/products');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save product');
+      setError(err.response?.data?.message || err.message || 'Failed to save product');
     } finally {
       setLoading(false);
     }
   };
+
 
   if (initialLoading) {
     return (
@@ -170,7 +173,7 @@ const AdminProductFormPage = () => {
             >
               <option value="">Select a category</option>
               {categories.map((c) => (
-                <option key={c._id} value={c._id}>
+                <option key={c._id} value={c.name}>
                   {c.name}
                 </option>
               ))}
@@ -181,7 +184,7 @@ const AdminProductFormPage = () => {
             <Input
               label="Unit / Pack Size"
               type="text"
-              placeholder="e.g. 1 bunch, 500g, 1L, 6 pack"
+              placeholder="e.g. 1 kg, 500g, 1L, 1 bunch, 6 pack"
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
               required
@@ -190,11 +193,11 @@ const AdminProductFormPage = () => {
 
           <div>
             <Input
-              label="Price ($)"
+              label="Price (₹)"
               type="number"
-              step="0.01"
+              step="1"
               min="0"
-              placeholder="4.99"
+              placeholder="150"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
@@ -203,14 +206,14 @@ const AdminProductFormPage = () => {
 
           <div>
             <Input
-              label="Discount Price ($) (Optional)"
+              label="Discount / Strike Price (₹) (Optional)"
               type="number"
-              step="0.01"
+              step="1"
               min="0"
-              placeholder="3.99"
+              placeholder="130"
               value={discountPrice}
               onChange={(e) => setDiscountPrice(e.target.value)}
-              helperText="Set lower than standard price for sale badge"
+              helperText="Set original price if offering a discount"
             />
           </div>
 
