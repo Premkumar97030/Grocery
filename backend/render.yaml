@@ -1,0 +1,28 @@
+# Render Blueprint Specification for Grocery Delivery Backend API
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: grocery-backend
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false # Set in Render Dashboard with your MongoDB Atlas connection string
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 30d
+      - key: USE_MEMORY_DB_FALLBACK
+        value: "false"
+      - key: CLIENT_URL
+        sync: false # Set in Render Dashboard with your deployed frontend URL (e.g. https://your-app.vercel.app or Render URL)
