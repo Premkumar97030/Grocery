@@ -26,11 +26,19 @@ const AdminOrdersPage = () => {
         page,
         limit: 10,
       });
-      setOrders(res.data || []);
-      setTotalPages(res.pages || 1);
-      setTotalOrders(res.total || 0);
+      const list = Array.isArray(res.orders)
+        ? res.orders
+        : Array.isArray(res.data?.orders)
+        ? res.data.orders
+        : Array.isArray(res.data)
+        ? res.data
+        : [];
+      setOrders(list);
+      setTotalPages(res.pages || res.pagination?.totalPages || 1);
+      setTotalOrders(res.total || res.pagination?.total || list.length);
     } catch (err) {
       console.error('Failed to load orders:', err);
+      setOrders([]);
     } finally {
       setLoading(false);
     }
@@ -44,10 +52,11 @@ const AdminOrdersPage = () => {
     try {
       setStatusUpdating(true);
       const res = await orderService.updateOrderStatus(orderId, newStatus);
+      const updated = res.data?.order || res.data || res.order;
       // Update locally
-      setOrders(orders.map(o => o._id === orderId ? res.data : o));
+      setOrders(orders.map(o => o._id === orderId ? (updated || o) : o));
       if (selectedOrder && selectedOrder._id === orderId) {
-        setSelectedOrder(res.data);
+        setSelectedOrder(updated || selectedOrder);
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to update order status');
@@ -142,7 +151,7 @@ const AdminOrdersPage = () => {
                       {order.items?.length || 0} items
                     </td>
                     <td className="px-6 py-4 font-bold text-gray-900">
-                      ${order.totalAmount?.toFixed(2)}
+                      ₹{order.totalAmount?.toFixed(2)}
                       <p className="text-[10px] text-gray-400 font-normal uppercase">{order.paymentMethod}</p>
                     </td>
                     <td className="px-6 py-4">
@@ -204,7 +213,7 @@ const AdminOrdersPage = () => {
               </div>
               <div className="text-right">
                 <p className="text-xs text-gray-500">Total Amount</p>
-                <p className="text-xl font-bold text-gray-900">${selectedOrder.totalAmount?.toFixed(2)}</p>
+                <p className="text-xl font-bold text-gray-900">₹{selectedOrder.totalAmount?.toFixed(2)}</p>
               </div>
             </div>
 
@@ -231,11 +240,11 @@ const AdminOrdersPage = () => {
                       />
                       <div>
                         <p className="font-semibold text-gray-800 text-xs">{item.name}</p>
-                        <p className="text-[11px] text-gray-400">{item.quantity} x ${item.price?.toFixed(2)}</p>
+                        <p className="text-[11px] text-gray-400">{item.quantity} x ₹{item.price?.toFixed(2)}</p>
                       </div>
                     </div>
                     <span className="font-bold text-gray-900 text-xs">
-                      ${(item.quantity * item.price).toFixed(2)}
+                      ₹{(item.quantity * item.price).toFixed(2)}
                     </span>
                   </div>
                 ))}

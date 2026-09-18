@@ -29,8 +29,21 @@ const AdminDashboardPage = () => {
           productService.getProducts({ limit: 50 }),
         ]);
 
-        const orders = ordersRes.data || [];
-        const products = productsRes.data || [];
+        const orders = Array.isArray(ordersRes.orders)
+          ? ordersRes.orders
+          : Array.isArray(ordersRes.data?.orders)
+          ? ordersRes.data.orders
+          : Array.isArray(ordersRes.data)
+          ? ordersRes.data
+          : [];
+
+        const products = Array.isArray(productsRes.products)
+          ? productsRes.products
+          : Array.isArray(productsRes.data?.products)
+          ? productsRes.data.products
+          : Array.isArray(productsRes.data)
+          ? productsRes.data
+          : [];
 
         const totalRev = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
         const pending = orders.filter(o => o.orderStatus === 'placed' || o.orderStatus === 'processing').length;
@@ -38,9 +51,9 @@ const AdminDashboardPage = () => {
 
         setStats({
           totalRevenue: totalRev,
-          totalOrders: ordersRes.total || orders.length,
+          totalOrders: ordersRes.total || ordersRes.pagination?.total || orders.length,
           pendingOrders: pending,
-          totalProducts: productsRes.total || products.length,
+          totalProducts: productsRes.total || productsRes.pagination?.total || products.length,
           lowStockProducts: lowStock.length,
         });
 
@@ -87,7 +100,7 @@ const AdminDashboardPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           title="Total Revenue"
-          value={`$${stats.totalRevenue.toFixed(2)}`}
+          value={`₹${stats.totalRevenue.toFixed(2)}`}
           icon={DollarSign}
           color="emerald"
         />
@@ -152,7 +165,7 @@ const AdminDashboardPage = () => {
                         {order.user?.name || 'Customer'}
                       </td>
                       <td className="py-3.5 font-bold text-gray-900">
-                        ${order.totalAmount?.toFixed(2)}
+                        ₹{order.totalAmount?.toFixed(2)}
                       </td>
                       <td className="py-3.5">
                         {getStatusBadge(order.orderStatus)}
@@ -200,7 +213,7 @@ const AdminDashboardPage = () => {
                     />
                     <div>
                       <p className="font-semibold text-xs text-gray-900 line-clamp-1">{product.name}</p>
-                      <p className="text-[11px] text-gray-500">${product.price?.toFixed(2)}</p>
+                      <p className="text-[11px] text-gray-500">₹{product.price?.toFixed(2)}</p>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 text-xs font-bold text-rose-700 bg-rose-100 rounded-lg">

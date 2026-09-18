@@ -23,11 +23,19 @@ const AdminProductsPage = () => {
         page,
         limit: 10,
       });
-      setProducts(res.data || []);
-      setTotalPages(res.pages || 1);
-      setTotalCount(res.total || 0);
+      const list = Array.isArray(res.products)
+        ? res.products
+        : Array.isArray(res.data?.products)
+        ? res.data.products
+        : Array.isArray(res.data)
+        ? res.data
+        : [];
+      setProducts(list);
+      setTotalPages(res.pages || res.pagination?.totalPages || 1);
+      setTotalCount(res.total || res.pagination?.total || list.length);
     } catch (err) {
       console.error('Failed to fetch products:', err);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
