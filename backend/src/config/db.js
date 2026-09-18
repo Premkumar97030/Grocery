@@ -3,18 +3,24 @@ const config = require('./env');
 
 let memoryServer = null;
 
+const maskUri = (uri) => {
+  if (!uri || typeof uri !== 'string') return '';
+  return uri.replace(/(mongodb(?:\+srv)?:\/\/[^:]+:)([^@]+)(@)/, '$1****$3');
+};
+
 const connectDB = async () => {
+  const uri = config.mongoUri;
   try {
-    console.log(`[DB] Attempting connection to MongoDB at: ${config.mongoUri}...`);
-    await mongoose.connect(config.mongoUri, {
-      serverSelectionTimeoutMS: 3000,
+    console.log(`[DB] Attempting connection to MongoDB at: ${maskUri(uri)}...`);
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 5000,
     });
     console.log(`[DB] MongoDB Connected successfully to: ${mongoose.connection.host}`);
   } catch (err) {
     console.warn(`[DB] Could not connect to primary MongoDB (${err.message}).`);
 
     if (config.useMemoryDbFallback) {
-      console.log('[DB] Starting embedded MongoMemoryServer for development fallback...');
+      console.log('[DB] Starting embedded MongoMemoryServer for development/preview fallback...');
       try {
         const { MongoMemoryServer } = require('mongodb-memory-server');
         memoryServer = await MongoMemoryServer.create();
@@ -49,3 +55,4 @@ const disconnectDB = async () => {
 };
 
 module.exports = { connectDB, databaseStatus, disconnectDB };
+

@@ -1,21 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
-import { ShoppingBag, Lock, Mail, ArrowRight, ShieldCheck, UserCheck } from 'lucide-react';
+import { ShoppingBag, Lock, Mail, ArrowRight, ShieldCheck, UserCheck, Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/';
+
+  useEffect(() => {
+    if (user) {
+      if (user.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
+    }
+  }, [user, navigate, from]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,14 +34,14 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const user = await login(email, password);
-      if (user.role === 'admin') {
-        navigate('/admin');
+      const loggedInUser = await login(email, password);
+      if (loggedInUser.role === 'admin') {
+        navigate('/admin', { replace: true });
       } else {
         navigate(from, { replace: true });
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password');
+      setError(err.response?.data?.message || err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -55,7 +66,7 @@ const LoginPage = () => {
         </div>
 
         {error && (
-          <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl font-medium">
+          <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl font-medium animate-fadeIn">
             {error}
           </div>
         )}
@@ -67,14 +78,14 @@ const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleQuickLogin('admin@grocery.com', 'Admin@123')}
-              className="px-3 py-2 bg-white text-xs font-semibold text-emerald-800 rounded-xl border border-emerald-200 hover:bg-emerald-100/50 hover:border-emerald-300 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+              className="px-3 py-2 bg-white text-xs font-semibold text-emerald-800 rounded-xl border border-emerald-200 hover:bg-emerald-100/50 hover:border-emerald-300 transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> Admin Demo
             </button>
             <button
               type="button"
               onClick={() => handleQuickLogin('user@grocery.com', 'User@123')}
-              className="px-3 py-2 bg-white text-xs font-semibold text-emerald-800 rounded-xl border border-emerald-200 hover:bg-emerald-100/50 hover:border-emerald-300 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+              className="px-3 py-2 bg-white text-xs font-semibold text-emerald-800 rounded-xl border border-emerald-200 hover:bg-emerald-100/50 hover:border-emerald-300 transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
             >
               <UserCheck className="w-3.5 h-3.5 text-emerald-600" /> Customer Demo
             </button>
@@ -88,19 +99,31 @@ const LoginPage = () => {
             placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            icon={Mail}
             required
             autoComplete="email"
           />
 
-          <Input
-            label="Password"
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-          />
+          <div className="relative">
+            <Input
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              icon={Lock}
+              required
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3.5 top-[38px] text-slate-400 hover:text-slate-600 transition-colors"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
 
           <Button
             type="submit"
@@ -128,3 +151,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
