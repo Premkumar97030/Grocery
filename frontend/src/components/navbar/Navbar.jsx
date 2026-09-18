@@ -95,6 +95,22 @@ export const Navbar = () => {
             >
               Categories
             </Link>
+            <Link
+              to="/about"
+              className={`text-sm font-semibold transition-colors ${
+                isActive('/about') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className={`text-sm font-semibold transition-colors ${
+                isActive('/contact') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Support
+            </Link>
           </nav>
 
           {/* Right Action Icons */}
@@ -241,11 +257,18 @@ export const Navbar = () => {
             All Products
           </Link>
           <Link
-            to="/categories"
+            to="/about"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
-            Categories
+            About Us
+          </Link>
+          <Link
+            to="/contact"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            Contact &amp; Support
           </Link>
           {isAuthenticated && (
             <>

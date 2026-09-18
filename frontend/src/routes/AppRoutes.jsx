@@ -15,6 +15,12 @@ import OrderDetailPage from '../pages/Orders/OrderDetailPage';
 import ProfilePage from '../pages/Profile/ProfilePage';
 import LoginPage from '../pages/Login/LoginPage';
 import RegisterPage from '../pages/Register/RegisterPage';
+import AboutPage from '../pages/About/AboutPage';
+import ContactPage from '../pages/Contact/ContactPage';
+import FAQPage from '../pages/FAQ/FAQPage';
+import TermsPage from '../pages/Legal/TermsPage';
+import PrivacyPage from '../pages/Legal/PrivacyPage';
+import DeliveryInfoPage from '../pages/Legal/DeliveryInfoPage';
 import NotFoundPage from '../pages/NotFound/NotFoundPage';
 
 // Admin Pages
@@ -41,6 +47,12 @@ const AppRoutes = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/delivery-info" element={<DeliveryInfoPage />} />
 
         {/* Protected Customer Routes */}
         <Route
@@ -104,3 +116,4 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+

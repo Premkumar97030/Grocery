@@ -60,7 +60,7 @@ export const Footer = () => {
       </div>
 
       {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12 border-b border-slate-800">
         {/* Brand Column */}
         <div className="lg:col-span-2 space-y-4">
           <Link to="/" className="flex items-center gap-2.5">
@@ -70,7 +70,7 @@ export const Footer = () => {
             <span className="text-xl font-extrabold text-white">FreshCart</span>
           </Link>
           <p className="text-sm text-slate-400 max-w-sm">
-            Your neighborhood online grocery store delivering fresh veggies, fruits, dairy, and daily essentials in minutes.
+            Your neighborhood online grocery store delivering farm-fresh vegetables, fruits, dairy, and daily essentials in 10 minutes.
           </p>
           <div className="space-y-2 text-xs text-slate-400">
             <div className="flex items-center gap-2">
@@ -120,33 +120,38 @@ export const Footer = () => {
           </ul>
         </div>
 
-        {/* Quick Links */}
+        {/* Company & Support Links */}
         <div>
-          <h4 className="text-white text-sm font-bold mb-4">Quick Links</h4>
+          <h4 className="text-white text-sm font-bold mb-4">Company &amp; Help</h4>
           <ul className="space-y-2.5 text-xs text-slate-400">
             <li>
-              <Link to="/products" className="hover:text-emerald-400 transition-colors">
-                Browse All Products
+              <Link to="/about" className="hover:text-emerald-400 transition-colors">
+                About Us
               </Link>
             </li>
             <li>
-              <Link to="/categories" className="hover:text-emerald-400 transition-colors">
-                All Categories
+              <Link to="/contact" className="hover:text-emerald-400 transition-colors">
+                Contact &amp; Support
               </Link>
             </li>
             <li>
-              <Link to="/cart" className="hover:text-emerald-400 transition-colors">
-                My Shopping Cart
+              <Link to="/faq" className="hover:text-emerald-400 transition-colors">
+                FAQ &amp; Help Center
               </Link>
             </li>
             <li>
-              <Link to="/orders" className="hover:text-emerald-400 transition-colors">
-                Track Orders
+              <Link to="/delivery-info" className="hover:text-emerald-400 transition-colors">
+                Delivery &amp; Returns
               </Link>
             </li>
             <li>
-              <Link to="/profile" className="hover:text-emerald-400 transition-colors">
-                My Account
+              <Link to="/privacy" className="hover:text-emerald-400 transition-colors">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/terms" className="hover:text-emerald-400 transition-colors">
+                Terms &amp; Conditions
               </Link>
             </li>
           </ul>
@@ -173,9 +178,13 @@ export const Footer = () => {
       {/* Copyright */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
         <p>&copy; {new Date().getFullYear()} FreshCart Grocery Delivery. All rights reserved.</p>
-        <p className="flex items-center gap-1 text-slate-400">
-          Crafted with React, Node.js, Express &amp; MongoDB
-        </p>
+        <div className="flex items-center gap-4 text-xs text-slate-500">
+          <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy</Link>
+          <span>&bull;</span>
+          <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms</Link>
+          <span>&bull;</span>
+          <Link to="/faq" className="hover:text-slate-300 transition-colors">FAQ</Link>
+        </div>
       </div>
     </footer>
   );
