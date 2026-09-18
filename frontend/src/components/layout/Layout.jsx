@@ -1,4 +1,5 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Navbar from '../navbar/Navbar';
 import Footer from '../footer/Footer';
 import { useApp } from '../../context/AppContext';
@@ -12,7 +13,7 @@ export const Layout = ({ children }) => {
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {children}
+        {children || <Outlet />}
       </main>
 
       <Footer />
@@ -54,3 +55,4 @@ export const Layout = ({ children }) => {
 };
 
 export default Layout;
+

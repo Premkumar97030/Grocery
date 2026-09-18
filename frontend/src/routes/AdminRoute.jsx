@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
@@ -23,7 +23,8 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  return children || <Outlet />;
 };
 
 export default AdminRoute;
+

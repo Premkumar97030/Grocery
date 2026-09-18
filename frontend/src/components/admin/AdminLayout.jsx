@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import ConnectionBadge from '../layout/ConnectionBadge';
-import { ShoppingBag, ShieldCheck } from 'lucide-react';
+ import { ShoppingBag, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export const AdminLayout = ({ children, title, subtitle, action }) => {
@@ -51,7 +51,7 @@ export const AdminLayout = ({ children, title, subtitle, action }) => {
             </div>
           )}
 
-          {children}
+          {children || <Outlet />}
         </main>
       </div>
     </div>
@@ -59,3 +59,4 @@ export const AdminLayout = ({ children, title, subtitle, action }) => {
 };
 
 export default AdminLayout;
+
