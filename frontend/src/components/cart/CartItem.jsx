@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2 } from 'lucide-react';
+import { getImageUrl } from '../../services/api';
 import QuantitySelector from '../product/QuantitySelector';
 
 export const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
@@ -8,9 +9,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   const effectivePrice = item.price || (product.discountPrice > 0 ? product.discountPrice : product.price) || 0;
   const itemTotal = effectivePrice * item.quantity;
 
-  const imageUrl = product.image?.startsWith('/uploads')
-    ? `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${product.image}`
-    : product.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80';
+  const imageUrl = getImageUrl(product.image);
 
   return (
     <div className="flex items-center gap-4 py-4 border-b border-slate-100 last:border-none">

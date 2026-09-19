@@ -1,6 +1,21 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+export const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD
+    ? 'https://grocery-backend-xtqn.onrender.com/api'
+    : 'http://localhost:5001/api');
+
+export const SERVER_BASE_URL = API_BASE_URL.replace(/\/api\/?$/, '');
+
+export const getImageUrl = (imagePath, fallback = 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80') => {
+  if (!imagePath) return fallback;
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+  return `${SERVER_BASE_URL}${cleanPath}`;
+};
 
 const api = axios.create({
   baseURL: API_BASE_URL,

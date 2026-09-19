@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useApp } from '../../context/AppContext';
+import { getImageUrl } from '../../services/api';
 import QuantitySelector from './QuantitySelector';
 import { Plus, Star, ShoppingCart, Check } from 'lucide-react';
 
@@ -57,9 +58,7 @@ export const ProductCard = ({ product }) => {
   const isOutOfStock = product.stock <= 0;
 
   // Resolve image URL (supports uploaded files and external images)
-  const imageUrl = product.image?.startsWith('/uploads')
-    ? `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${product.image}`
-    : product.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80';
+  const imageUrl = getImageUrl(product.image);
 
   return (
     <div className="group relative bg-white rounded-3xl border border-slate-100/80 p-3.5 sm:p-4 hover:border-slate-200 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 flex flex-col justify-between">

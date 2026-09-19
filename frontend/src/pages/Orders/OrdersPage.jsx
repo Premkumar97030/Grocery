@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import orderService from '../../services/orderService';
+import { getImageUrl } from '../../services/api';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import Badge from '../../components/common/Badge';
@@ -144,11 +145,7 @@ export const OrdersPage = () => {
                   className="flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-xl px-2.5 py-1.5 text-xs"
                 >
                   <img
-                    src={
-                      item.image?.startsWith('/uploads')
-                        ? `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${item.image}`
-                        : item.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=150&q=80'
-                    }
+                    src={getImageUrl(item.image, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=150&q=80')}
                     alt={item.name}
                     className="w-6 h-6 rounded-md object-cover"
                   />

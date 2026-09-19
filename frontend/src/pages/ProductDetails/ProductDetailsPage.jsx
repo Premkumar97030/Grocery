@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import productService from '../../services/productService';
+import { getImageUrl } from '../../services/api';
 import { useCart } from '../../context/CartContext';
 import { useApp } from '../../context/AppContext';
 import ProductGrid from '../../components/product/ProductGrid';
@@ -90,9 +91,7 @@ export const ProductDetailsPage = () => {
     }
   };
 
-  const imageUrl = product.image?.startsWith('/uploads')
-    ? `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${product.image}`
-    : product.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80';
+  const imageUrl = getImageUrl(product.image);
 
   return (
     <div className="space-y-12">

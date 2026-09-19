@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import orderService from '../../services/orderService';
+import { getImageUrl } from '../../services/api';
 import { useApp } from '../../context/AppContext';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
@@ -185,11 +186,7 @@ export const OrderDetailPage = () => {
             {order.items?.map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 py-3.5">
                 <img
-                  src={
-                    item.image?.startsWith('/uploads')
-                      ? `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${item.image}`
-                      : item.image || 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=150&q=80'
-                  }
+                  src={getImageUrl(item.image, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=150&q=80')}
                   alt={item.name}
                   className="w-16 h-16 rounded-2xl object-cover bg-slate-50 border border-slate-100 flex-shrink-0"
                 />

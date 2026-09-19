@@ -18,6 +18,8 @@ const app = express();
 // CORS configuration
 const allowedOrigins = [
   config.clientUrl,
+  'https://grocery-frontend-jet.vercel.app',
+  'https://grocery-frontend.vercel.app',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
@@ -26,11 +28,19 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps or curl)
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      // allow requests with no origin (like mobile apps, postman, curl)
+      if (!origin) return callback(null, true);
+
+      // Allow exact origin matches or any vercel.app preview domain or localhost
+      if (
+        allowedOrigins.indexOf(origin) !== -1 ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1')
+      ) {
         return callback(null, true);
       }
-      return callback(null, true); // Permissive in dev
+      return callback(null, true); // Permissive fallback
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
