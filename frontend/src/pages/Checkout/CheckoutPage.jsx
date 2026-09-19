@@ -175,11 +175,13 @@ export const CheckoutPage = () => {
         {/* Left 2 Cols: Address & Payment Method */}
         <div className="lg:col-span-2 space-y-6">
           {/* 1. Delivery Address Card */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-xs">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 space-y-4 shadow-3d">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-emerald-600" />
-                <h2 className="text-base font-bold text-slate-900">1. Delivery Address</h2>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                  <MapPin className="w-4 h-4 stroke-[2.5]" />
+                </div>
+                <h2 className="text-base font-black text-slate-900">1. Delivery Address</h2>
               </div>
               <Button
                 size="sm"
@@ -194,8 +196,9 @@ export const CheckoutPage = () => {
             {loadingAddresses ? (
               <LoadingSpinner size="sm" text="Loading addresses..." />
             ) : addresses.length === 0 ? (
-              <div className="p-6 text-center rounded-2xl bg-slate-50 border border-slate-200/60 space-y-3">
-                <p className="text-xs text-slate-500">You do not have any saved delivery addresses.</p>
+              <div className="text-center py-8 px-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-3">
+                <MapPin className="w-8 h-8 text-slate-300 mx-auto" />
+                <p className="text-xs text-slate-500 font-medium">No saved addresses found</p>
                 <Button
                   size="sm"
                   variant="primary"
@@ -206,7 +209,7 @@ export const CheckoutPage = () => {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {addresses.map((addr) => (
                   <AddressCard
                     key={addr._id}
@@ -221,28 +224,30 @@ export const CheckoutPage = () => {
           </div>
 
           {/* 2. Payment Method Card */}
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-xs">
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
-              <CreditCard className="w-5 h-5 text-emerald-600" />
-              <h2 className="text-base font-bold text-slate-900">2. Payment Method</h2>
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 space-y-4 shadow-3d">
+            <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                <CreditCard className="w-4 h-4 stroke-[2.5]" />
+              </div>
+              <h2 className="text-base font-black text-slate-900">2. Payment Method</h2>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {/* Cash on Delivery */}
               <label
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
+                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
                   paymentMethod === 'cod'
-                    ? 'border-emerald-600 bg-emerald-50/40 ring-2 ring-emerald-500/20'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-emerald-600 bg-emerald-50/60 shadow-[0_4px_14px_rgba(16,185,129,0.15)] ring-2 ring-emerald-500/20'
+                    : 'border-slate-200 bg-white hover:border-slate-300 shadow-sm'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                    <Banknote className="w-5 h-5" />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold shadow-xs">
+                    <Banknote className="w-6 h-6 stroke-[2.2]" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-slate-900 block">Cash on Delivery (COD)</span>
-                    <span className="text-xs text-slate-500">Pay cash or UPI directly when your groceries arrive</span>
+                    <span className="text-sm font-black text-slate-900 block">Cash on Delivery (COD)</span>
+                    <span className="text-xs text-slate-500 font-medium">Pay cash or scan QR when your delivery arrives</span>
                   </div>
                 </div>
                 <input
@@ -251,25 +256,25 @@ export const CheckoutPage = () => {
                   value="cod"
                   checked={paymentMethod === 'cod'}
                   onChange={() => setPaymentMethod('cod')}
-                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                 />
               </label>
 
               {/* UPI Mock */}
               <label
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
+                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
                   paymentMethod === 'upi'
-                    ? 'border-emerald-600 bg-emerald-50/40 ring-2 ring-emerald-500/20'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-emerald-600 bg-emerald-50/60 shadow-[0_4px_14px_rgba(16,185,129,0.15)] ring-2 ring-emerald-500/20'
+                    : 'border-slate-200 bg-white hover:border-slate-300 shadow-sm'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
-                    <Smartphone className="w-5 h-5" />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold shadow-xs">
+                    <Smartphone className="w-6 h-6 stroke-[2.2]" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-slate-900 block">Instant UPI Payment</span>
-                    <span className="text-xs text-slate-500">Google Pay, PhonePe, Paytm QR simulation</span>
+                    <span className="text-sm font-black text-slate-900 block">Instant UPI Payment</span>
+                    <span className="text-xs text-slate-500 font-medium">Google Pay, PhonePe, Paytm QR simulation</span>
                   </div>
                 </div>
                 <input
@@ -278,25 +283,25 @@ export const CheckoutPage = () => {
                   value="upi"
                   checked={paymentMethod === 'upi'}
                   onChange={() => setPaymentMethod('upi')}
-                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                 />
               </label>
 
               {/* Card Mock */}
               <label
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
+                className={`flex items-center justify-between p-4.5 rounded-2xl border cursor-pointer transition-all ${
                   paymentMethod === 'card'
-                    ? 'border-emerald-600 bg-emerald-50/40 ring-2 ring-emerald-500/20'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-emerald-600 bg-emerald-50/60 shadow-[0_4px_14px_rgba(16,185,129,0.15)] ring-2 ring-emerald-500/20'
+                    : 'border-slate-200 bg-white hover:border-slate-300 shadow-sm'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
-                    <CreditCard className="w-5 h-5" />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold shadow-xs">
+                    <CreditCard className="w-6 h-6 stroke-[2.2]" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-slate-900 block">Credit / Debit Card</span>
-                    <span className="text-xs text-slate-500">Visa, Mastercard, RuPay cards supported</span>
+                    <span className="text-sm font-black text-slate-900 block">Credit / Debit Card</span>
+                    <span className="text-xs text-slate-500 font-medium">Visa, Mastercard, RuPay cards supported</span>
                   </div>
                 </div>
                 <input
@@ -305,17 +310,17 @@ export const CheckoutPage = () => {
                   value="card"
                   checked={paymentMethod === 'card'}
                   onChange={() => setPaymentMethod('card')}
-                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500"
+                  className="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                 />
               </label>
             </div>
           </div>
         </div>
 
-        {/* Right Col: Order Summary & Place Order */}
+        {/* Right Col: 3D Order Summary & Place Order */}
         <div className="lg:col-span-1 sticky top-24 space-y-4">
-          <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-5 shadow-sm">
-            <h3 className="font-extrabold text-slate-900 text-base pb-3 border-b border-slate-100">
+          <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 space-y-6 shadow-3d-lg">
+            <h3 className="font-black text-slate-900 text-lg pb-3 border-b border-slate-100">
               Basket Review ({cart.items.reduce((acc, i) => acc + i.quantity, 0)} items)
             </h3>
 
@@ -326,10 +331,10 @@ export const CheckoutPage = () => {
                 const price = item.price || prod.discountPrice || prod.price || 0;
                 return (
                   <div key={prod._id || prod} className="flex items-center justify-between text-xs">
-                    <span className="text-slate-600 truncate max-w-[150px]">
+                    <span className="text-slate-600 truncate max-w-[150px] font-medium">
                       {item.quantity}x {prod.name}
                     </span>
-                    <span className="font-bold text-slate-900">
+                    <span className="font-black text-slate-900">
                       ₹{(price * item.quantity).toFixed(0)}
                     </span>
                   </div>
@@ -338,22 +343,24 @@ export const CheckoutPage = () => {
             </div>
 
             {/* Calculation Breakdown */}
-            <div className="pt-3 border-t border-slate-100 space-y-2.5 text-xs">
-              <div className="flex items-center justify-between text-slate-600">
+            <div className="pt-4 border-t border-slate-100 space-y-3 text-xs">
+              <div className="flex items-center justify-between text-slate-600 font-medium">
                 <span>Items Total</span>
-                <span className="font-bold text-slate-900">₹{subtotal.toFixed(2)}</span>
+                <span className="font-black text-slate-900">₹{subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex items-center justify-between text-slate-600">
+              <div className="flex items-center justify-between text-slate-600 font-medium">
                 <span>Delivery Fee</span>
                 {deliveryFee === 0 ? (
-                  <span className="font-bold text-emerald-600 uppercase text-[11px]">FREE</span>
+                  <span className="font-bold text-emerald-600 uppercase text-[11px] bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    FREE
+                  </span>
                 ) : (
-                  <span className="font-bold text-slate-900">₹{deliveryFee.toFixed(2)}</span>
+                  <span className="font-black text-slate-900">₹{deliveryFee.toFixed(2)}</span>
                 )}
               </div>
               <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-sm font-bold text-slate-900">
                 <span>Total Payable</span>
-                <span className="text-xl font-black text-emerald-600">
+                <span className="text-2xl font-black text-emerald-600">
                   ₹{totalAmount.toFixed(2)}
                 </span>
               </div>
@@ -364,14 +371,14 @@ export const CheckoutPage = () => {
               variant="primary"
               loading={submittingOrder}
               onClick={handlePlaceOrder}
-              className="w-full text-sm font-extrabold shadow-md shadow-emerald-600/30"
+              className="w-full text-sm font-black"
             >
               Place Order &bull; ₹{totalAmount.toFixed(0)}
             </Button>
 
-            <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Safe &amp; Protected Transaction</span>
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-2 text-[11px] text-slate-400 font-medium">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>Safe &amp; Protected 256-bit Encrypted</span>
             </div>
           </div>
         </div>

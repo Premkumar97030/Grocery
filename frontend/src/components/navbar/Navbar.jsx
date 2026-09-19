@@ -50,16 +50,16 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 gap-4 lg:gap-8">
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/30 group-hover:scale-105 transition-transform duration-200">
-              <ShoppingBag className="w-5 h-5" />
+          <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-[0_4px_14px_rgba(16,185,129,0.35)] group-hover:scale-108 group-hover:shadow-[0_8px_20px_rgba(16,185,129,0.45)] transition-all duration-300 border-t border-emerald-300/40">
+              <ShoppingBag className="w-6 h-6 stroke-[2.2]" />
             </div>
             <div>
-              <span className="text-xl font-extrabold bg-gradient-to-r from-emerald-700 to-emerald-500 bg-clip-text text-transparent">
+              <span className="text-xl font-black bg-gradient-to-r from-emerald-800 to-teal-600 bg-clip-text text-transparent">
                 FreshCart
               </span>
-              <span className="block text-[10px] tracking-wider uppercase font-bold text-slate-400 -mt-1">
-                Grocery Express
+              <span className="block text-[10px] tracking-wider uppercase font-black text-slate-400 -mt-1">
+                3D Grocery Express
               </span>
             </div>
           </Link>
@@ -73,7 +73,7 @@ export const Navbar = () => {
           <nav className="hidden lg:flex items-center gap-6">
             <Link
               to="/"
-              className={`text-sm font-semibold transition-colors ${
+              className={`text-sm font-bold transition-all hover:-translate-y-0.5 ${
                 isActive('/') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -81,7 +81,7 @@ export const Navbar = () => {
             </Link>
             <Link
               to="/products"
-              className={`text-sm font-semibold transition-colors ${
+              className={`text-sm font-bold transition-all hover:-translate-y-0.5 ${
                 isActive('/products') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -89,7 +89,7 @@ export const Navbar = () => {
             </Link>
             <Link
               to="/categories"
-              className={`text-sm font-semibold transition-colors ${
+              className={`text-sm font-bold transition-all hover:-translate-y-0.5 ${
                 isActive('/categories') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -97,7 +97,7 @@ export const Navbar = () => {
             </Link>
             <Link
               to="/about"
-              className={`text-sm font-semibold transition-colors ${
+              className={`text-sm font-bold transition-all hover:-translate-y-0.5 ${
                 isActive('/about') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -105,7 +105,7 @@ export const Navbar = () => {
             </Link>
             <Link
               to="/contact"
-              className={`text-sm font-semibold transition-colors ${
+              className={`text-sm font-bold transition-all hover:-translate-y-0.5 ${
                 isActive('/contact') ? 'text-emerald-600' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -115,20 +115,20 @@ export const Navbar = () => {
 
           {/* Right Action Icons */}
           <div className="flex items-center gap-3">
-            {/* Cart Button */}
+            {/* 3D Cart Pill Button */}
             <Link
               to="/cart"
-              className="relative flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100/80 text-emerald-800 px-3.5 py-2 rounded-2xl transition-all duration-200 border border-emerald-100"
+              className="relative flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 px-4 py-2.5 rounded-2xl shadow-[0_3px_0_#a7f3d0,0_4px_10px_rgba(16,185,129,0.1)] hover:shadow-[0_5px_0_#a7f3d0,0_8px_16px_rgba(16,185,129,0.15)] active:translate-y-[2px] active:shadow-[0_1px_0_#a7f3d0] transition-all duration-150 border border-emerald-200/80"
             >
               <div className="relative">
-                <ShoppingCart className="w-5 h-5 text-emerald-700" />
+                <ShoppingCart className="w-5 h-5 text-emerald-700 stroke-[2.2]" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-emerald-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-2.5 -right-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-bounce">
                     {cartCount}
                   </span>
                 )}
               </div>
-              <span className="hidden sm:inline font-bold text-xs">
+              <span className="hidden sm:inline font-black text-xs text-emerald-900">
                 ₹{cartTotal.toFixed(0)}
               </span>
             </Link>

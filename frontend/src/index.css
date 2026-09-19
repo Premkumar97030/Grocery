@@ -26,19 +26,143 @@
 }
 
 @layer components {
-  /* Glassmorphism utility */
-  .glass {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+  /* 3D Perspective & Preservation Containers */
+  .perspective-800 {
+    perspective: 800px;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .perspective-1500 {
+    perspective: 1500px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  .glass-dark {
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* 3D Depth Layer Translations */
+  .translate-z-10 {
+    transform: translateZ(10px);
+  }
+  .translate-z-20 {
+    transform: translateZ(20px);
+  }
+  .translate-z-30 {
+    transform: translateZ(30px);
+  }
+  .translate-z-40 {
+    transform: translateZ(40px);
+  }
+  .translate-z-50 {
+    transform: translateZ(50px);
+  }
+
+  /* 3D Embossed Shadows with Ambient Occlusion */
+  .shadow-3d {
+    box-shadow: 
+      0 10px 25px -5px rgba(15, 23, 42, 0.08),
+      0 8px 10px -6px rgba(15, 23, 42, 0.05),
+      0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  }
+
+  .shadow-3d-lg {
+    box-shadow: 
+      0 20px 40px -15px rgba(15, 23, 42, 0.12),
+      0 12px 20px -8px rgba(15, 23, 42, 0.08),
+      0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  }
+
+  .shadow-3d-emerald {
+    box-shadow: 
+      0 20px 40px -12px rgba(16, 185, 129, 0.35),
+      0 8px 16px -6px rgba(16, 185, 129, 0.2),
+      0 1px 0 0 rgba(255, 255, 255, 0.4) inset;
+  }
+
+  .shadow-3d-amber {
+    box-shadow: 
+      0 20px 40px -12px rgba(245, 158, 11, 0.35),
+      0 8px 16px -6px rgba(245, 158, 11, 0.2),
+      0 1px 0 0 rgba(255, 255, 255, 0.4) inset;
+  }
+
+  .shadow-3d-rose {
+    box-shadow: 
+      0 20px 40px -12px rgba(244, 63, 94, 0.35),
+      0 8px 16px -6px rgba(244, 63, 94, 0.2),
+      0 1px 0 0 rgba(255, 255, 255, 0.4) inset;
+  }
+
+  .shadow-3d-hover {
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .shadow-3d-hover:hover {
+    transform: translateY(-6px) scale3d(1.02, 1.02, 1.02);
+    box-shadow: 
+      0 25px 50px -12px rgba(15, 23, 42, 0.16),
+      0 15px 25px -8px rgba(16, 185, 129, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.95) inset;
+  }
+
+  /* 3D Tactile Buttons */
+  .btn-3d-emerald {
+    box-shadow: 0 4px 0 #047857, 0 8px 16px rgba(5, 150, 105, 0.35);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-3d-emerald:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #047857, 0 12px 22px rgba(5, 150, 105, 0.45);
+  }
+  .btn-3d-emerald:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #047857, 0 4px 8px rgba(5, 150, 105, 0.2);
+  }
+
+  .btn-3d-amber {
+    box-shadow: 0 4px 0 #b45309, 0 8px 16px rgba(217, 119, 6, 0.35);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-3d-amber:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #b45309, 0 12px 22px rgba(217, 119, 6, 0.45);
+  }
+  .btn-3d-amber:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #b45309, 0 4px 8px rgba(217, 119, 6, 0.2);
+  }
+
+  /* 3D Glassmorphism Cards */
+  .glass-3d {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.7) 100%
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 
+      0 20px 40px -15px rgba(15, 23, 42, 0.08),
+      0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  }
+
+  .glass-3d-dark {
+    background: linear-gradient(
+      135deg,
+      rgba(15, 23, 42, 0.9) 0%,
+      rgba(30, 41, 59, 0.8) 100%
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 
+      0 20px 40px -15px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   }
 
   /* Shimmer animation for skeletons */
@@ -52,6 +176,23 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
+
+  /* 3D Floating Animations */
+  .animate-float-3d {
+    animation: float3d 4s ease-in-out infinite;
+  }
+
+  .animate-float-3d-slow {
+    animation: float3d 7s ease-in-out infinite;
+  }
+
+  .animate-float-3d-reverse {
+    animation: float3dReverse 5s ease-in-out infinite;
+  }
+
+  .animate-glow-3d {
+    animation: glow3d 3s ease-in-out infinite alternate;
+  }
 }
 
 @keyframes shimmer {
@@ -60,5 +201,32 @@
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+@keyframes float3d {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) translateZ(0px);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg) translateZ(20px);
+  }
+}
+
+@keyframes float3dReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) translateZ(0px);
+  }
+  50% {
+    transform: translateY(10px) rotate(-1.5deg) translateZ(15px);
+  }
+}
+
+@keyframes glow3d {
+  0% {
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.75));
   }
 }
