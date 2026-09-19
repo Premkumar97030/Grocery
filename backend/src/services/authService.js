@@ -4,16 +4,17 @@ const generateToken = require('../utils/generateToken');
 
 class AuthService {
   async register({ name, email, password, phone, role }) {
-    const existingUser = await User.findOne({ email });
+    const cleanEmail = email ? String(email).toLowerCase().trim() : '';
+    const existingUser = await User.findOne({ email: cleanEmail });
     if (existingUser) {
       throw new Error('User already exists with this email address');
     }
 
     const user = await User.create({
-      name,
-      email,
+      name: name?.trim(),
+      email: cleanEmail,
       password,
-      phone: phone || '',
+      phone: phone ? String(phone).trim() : '',
       role: role && role === 'admin' ? 'admin' : 'customer',
     });
 
@@ -32,7 +33,8 @@ class AuthService {
   }
 
   async login({ email, password }) {
-    const user = await User.findOne({ email }).select('+password');
+    const cleanEmail = email ? String(email).toLowerCase().trim() : '';
+    const user = await User.findOne({ email: cleanEmail }).select('+password');
     if (!user) {
       throw new Error('Invalid email or password');
     }

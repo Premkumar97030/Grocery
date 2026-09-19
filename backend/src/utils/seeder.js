@@ -9,12 +9,7 @@ const seedData = async () => {
     const productCount = await Product.countDocuments();
     const categoryCount = await Category.countDocuments();
 
-    if (userCount > 0 && productCount > 0 && categoryCount > 0) {
-      console.log('[Seeder] Database already contains data. Skipping initial seeding.');
-      return;
-    }
-
-    console.log('[Seeder] Initializing fresh grocery dataset...');
+    console.log(`[Seeder] Checking database contents: ${categoryCount} categories, ${productCount} products, ${userCount} users.`);
 
     // 1. Seed Categories
     const categoriesData = [
@@ -68,9 +63,9 @@ const seedData = async () => {
       console.log('[Seeder] Categories seeded successfully.');
     }
 
-    // 2. Seed Default Accounts
-    let adminUser, customerUser;
-    if (userCount === 0) {
+    // 2. Seed / Upsert Guaranteed Default Accounts
+    let adminUser = await User.findOne({ email: 'admin@grocery.com' }).select('+password');
+    if (!adminUser) {
       adminUser = await User.create({
         name: 'FreshCart Admin',
         email: 'admin@grocery.com',
@@ -78,7 +73,16 @@ const seedData = async () => {
         phone: '+91 9876543210',
         role: 'admin',
       });
+      console.log('[Seeder] Created default Admin user (admin@grocery.com / Admin@123)');
+    } else {
+      adminUser.role = 'admin';
+      adminUser.password = 'Admin@123';
+      await adminUser.save();
+      console.log('[Seeder] Verified/reset default Admin credentials.');
+    }
 
+    let customerUser = await User.findOne({ email: 'user@grocery.com' }).select('+password');
+    if (!customerUser) {
       customerUser = await User.create({
         name: 'Prem Kumar',
         email: 'user@grocery.com',
@@ -87,7 +91,6 @@ const seedData = async () => {
         role: 'customer',
       });
 
-      // Default Address for customer
       const defaultAddress = await Address.create({
         user: customerUser._id,
         fullName: 'Prem Kumar',
@@ -102,8 +105,11 @@ const seedData = async () => {
 
       customerUser.addresses.push(defaultAddress._id);
       await customerUser.save();
-
-      console.log('[Seeder] Default Admin & Customer users seeded.');
+      console.log('[Seeder] Created default Customer user (user@grocery.com / User@123)');
+    } else {
+      customerUser.password = 'User@123';
+      await customerUser.save();
+      console.log('[Seeder] Verified/reset default Customer credentials.');
     }
 
     // 3. Seed Products
