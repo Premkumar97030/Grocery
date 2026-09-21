@@ -6,6 +6,8 @@ import { useCart } from '../../context/CartContext';
 import { useApp } from '../../context/AppContext';
 import ProductGrid from '../../components/product/ProductGrid';
 import QuantitySelector from '../../components/product/QuantitySelector';
+import Product3DViewer from '../../components/product/Product3DViewer';
+import Product3DModal from '../../components/product/Product3DModal';
 import Button from '../../components/common/Button';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
@@ -19,6 +21,10 @@ import {
   Plus,
   ShoppingCart,
   Heart,
+  Box,
+  Image as ImageIcon,
+  Sparkles,
+  Maximize2
 } from 'lucide-react';
 
 export const ProductDetailsPage = () => {
@@ -32,6 +38,8 @@ export const ProductDetailsPage = () => {
   const [error, setError] = useState(null);
   const [selectedQty, setSelectedQty] = useState(1);
   const [adding, setAdding] = useState(false);
+  const [viewMode, setViewMode] = useState('3d'); // '3d' | '2d'
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchProduct = async () => {
     try {
@@ -117,20 +125,93 @@ export const ProductDetailsPage = () => {
 
       {/* Main Product Info Grid */}
       <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-10 shadow-sm grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
-        {/* Left: Product Image Stage */}
+        {/* Left: Product Media Stage (3D Turntable / 2D High-Res) */}
         <div className="space-y-4">
-          <div className="aspect-square rounded-3xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center relative">
-            {hasDiscount && (
-              <span className="absolute top-4 left-4 z-10 bg-rose-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-md">
-                {discountPercent}% DISCOUNT
-              </span>
+          {/* Mode Switcher Tabs */}
+          <div className="flex items-center justify-between bg-slate-100 p-1.5 rounded-2xl">
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setViewMode('3d')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                  viewMode === '3d'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/20'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <Box className="w-3.5 h-3.5 text-emerald-300" />
+                <span>3D STUDIO</span>
+                <span className="bg-emerald-400/30 text-emerald-100 text-[9px] px-1.5 py-0.2 rounded-full">
+                  360°
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode('2d')}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+                  viewMode === '2d'
+                    ? 'bg-white text-slate-900 shadow-md shadow-slate-900/5'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <ImageIcon className="w-3.5 h-3.5" />
+                <span>2D PHOTO</span>
+              </button>
+            </div>
+
+            {viewMode === '3d' && (
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center gap-1 text-[11px] font-bold text-slate-500 hover:text-slate-900 px-2 py-1 transition-colors"
+                title="Open in Fullscreen 3D Modal"
+              >
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Fullscreen</span>
+              </button>
             )}
-            <img
-              src={imageUrl}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
           </div>
+
+          {/* Media Canvas Stage */}
+          {viewMode === '3d' ? (
+            <div className="aspect-square sm:h-[460px] w-full">
+              <Product3DViewer
+                product={product}
+                height="100%"
+                showControls={true}
+                autoRotateDefault={true}
+                onFullscreenToggle={() => setIsModalOpen(true)}
+              />
+            </div>
+          ) : (
+            <div className="aspect-square rounded-3xl bg-slate-50 border border-slate-100 overflow-hidden flex items-center justify-center relative shadow-inner">
+              {hasDiscount && (
+                <span className="absolute top-4 left-4 z-10 bg-rose-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-md">
+                  {discountPercent}% DISCOUNT
+                </span>
+              )}
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+          )}
+
+          {/* 3D Interaction Tips */}
+          {viewMode === '3d' && (
+            <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 font-semibold pt-1">
+              <span className="flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-emerald-500" />
+                Drag to orbit 360°
+              </span>
+              <span>&bull;</span>
+              <span>Scroll to zoom</span>
+              <span>&bull;</span>
+              <span>Click pins for details</span>
+            </div>
+          )}
         </div>
 
         {/* Right: Specifications & Add to Cart */}
@@ -264,6 +345,13 @@ export const ProductDetailsPage = () => {
           <ProductGrid products={relatedProducts} />
         </section>
       )}
+
+      {/* Fullscreen / Expanded 3D Inspection Modal */}
+      <Product3DModal
+        product={product}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
